@@ -9,6 +9,7 @@ import 'package:ClassViz/util/custom_cards.dart';
 import 'package:ClassViz/util/misc.dart';
 import 'package:ClassViz/models/ModelProvider.dart';
 import 'package:ClassViz/util/dialog_box.dart';
+import 'package:ClassViz/pages/home_page.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -121,10 +122,25 @@ class _TaskPageState extends State<TaskPage> {
   Future<void> updateTaskCompletion(Task task, bool completed) async {
     try {
       final rawCategory = task.category ?? '';
-      final category = rawCategory
+      var category = rawCategory
           .replaceAll(RegExp(r'^[^\w]+'), '')
           .trim()
           .toLowerCase();
+
+      switch (category) {
+        case "academics":
+          category = "knowledge";
+          break;
+        case "chores":
+          category = "persistence";
+          break;
+        case "socials":
+          category = "charisma";
+          break;
+        case "physical":
+          category = "strength";
+          break;
+      }
 
       final sum =
           Misc().taskFormula(task.difficulty ?? 1, task.timeIntensive ?? 1) /
@@ -230,12 +246,12 @@ class _TaskPageState extends State<TaskPage> {
     }
   }
 
-  String _formatDuration(Duration d) {
-    if (d.inDays > 0) return "${d.inDays}d ${d.inHours % 24}h";
-    if (d.inHours > 0) return "${d.inHours}h ${d.inMinutes % 60}m";
-    if (d.inMinutes > 0) return "${d.inMinutes}m";
-    return "${d.inSeconds}s";
-  }
+  // String _formatDuration(Duration d) {
+  //   if (d.inDays > 0) return "${d.inDays}d ${d.inHours % 24}h";
+  //   if (d.inHours > 0) return "${d.inHours}h ${d.inMinutes % 60}m";
+  //   if (d.inMinutes > 0) return "${d.inMinutes}m";
+  //   return "${d.inSeconds}s";
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -440,6 +456,20 @@ class _TaskPageState extends State<TaskPage> {
                               categoryColor: _getCategoryColor(task.category),
                               borderColor: _getCategoryColor(task.category),
                               completed: task.completed,
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => EditTaskPage(task: task),
+                                  ),
+                                );
+
+                                fetchTasks();
+                              },
+
+                              onComplete: () {
+                                updateTaskCompletion(task, !(task.completed));
+                              },
                               onDelete: () => deleteTask(task.id, task.version),
                             );
                           },
@@ -501,7 +531,6 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   void _showAddTaskModal(BuildContext context) {
-    // Navigate to home and trigger modal
-    Navigator.pushNamed(context, "/homepage");
+    showDialog(context: context, builder: (context) => AddTaskModal());
   }
 }

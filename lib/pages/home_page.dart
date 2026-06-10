@@ -105,10 +105,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             }
             sum /= 4;
             setState(() {
-              knowledge = listOf[0];
-              charisma = listOf[1];
-              persistence = listOf[2];
-              strength = listOf[3];
+              knowledge = listOf[0] * 100;
+              charisma = listOf[1] * 100;
+              persistence = listOf[2] * 100;
+              strength = listOf[3] * 100;
               level = sum;
             });
 
@@ -383,25 +383,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         children: [
                           AttributeCard(
                             label: 'Academics',
-                            value: (knowledge! * 100).toInt(),
+                            value: (knowledge ?? 0).toInt(),
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           const SizedBox(height: 12),
                           AttributeCard(
                             label: 'Physical',
-                            value: (strength! * 100).toInt(),
+                            value: (strength ?? 0).toInt(),
                             color: const Color.fromARGB(255, 76, 175, 80),
                           ),
                           const SizedBox(height: 12),
                           AttributeCard(
                             label: 'Socials',
-                            value: (charisma! * 100).toInt(),
+                            value: (charisma ?? 0).toInt(),
                             color: const Color.fromARGB(255, 244, 67, 54),
                           ),
                           const SizedBox(height: 12),
                           AttributeCard(
                             label: 'Chores',
-                            value: (persistence! * 100).toInt(),
+                            value: (persistence ?? 0).toInt(),
                             color: const Color.fromARGB(255, 255, 152, 0),
                           ),
                         ],

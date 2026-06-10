@@ -1,0 +1,3 @@
+*.tmpl linguist-documentation
+*.template linguist-documentation
+*.vm linguist-documentation

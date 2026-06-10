@@ -86,99 +86,73 @@ class QuestCard extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                         onTap: onComplete,
                         child: Container(
-                          width: 40,
-                          height: 40,
+                          width: 26,
+                          height: 26,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
+                            color: completed ? borderColor : Colors.transparent,
                             border: Border.all(color: borderColor, width: 2),
                           ),
-                          child: Center(
-                            child: Icon(
-                              Icons.check_circle,
-                              color: completed
-                                  ? borderColor
-                                  : Colors.transparent,
-                              size: 20,
-                            ),
+                          child: completed
+                              ? const Icon(
+                                  Icons.check,
+                                  size: 16,
+                                  color: Colors.black,
+                                )
+                              : null,
+                        ),
+                      ),
+
+                      const SizedBox(width: 14),
+
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: completed ? Colors.white38 : Colors.white,
+                            decoration: completed
+                                ? TextDecoration.lineThrough
+                                : null,
                           ),
                         ),
                       ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-  title,
-  style: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-    color: completed
-        ? Colors.white38
-        : Colors.white,
-    decoration:
-        completed
-            ? TextDecoration.lineThrough
-            : null,
-  ),
-),
-                            SizedBox(height: 4),
-                            Text(
-                              category,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: borderColor,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ],
+
+                      if (onDelete != null)
+                        GestureDetector(
+                          onTap: onDelete,
+                          child: Icon(
+                            Icons.delete_outline,
+                            color: Colors.white24,
+                            size: 20,
+                          ),
                         ),
-                      ),
                     ],
                   ),
-                  if (dueStatus != null) ...[
-                    SizedBox(height: 8),
-                    Text(
-                      dueStatus!,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: dueStatus!.toLowerCase().contains('due soon')
-                            ? Colors.orange
-                            : Colors.grey,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                  if (timeRange != null) ...[
-                    SizedBox(height: 8),
-                    Text(
-                      timeRange!,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[400]),
-                    ),
-                  ],
-                  SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
+
+                  const SizedBox(height: 12),
+
+                  Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
+                          horizontal: 10,
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
                           color: borderColor.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           category,
@@ -186,65 +160,109 @@ class QuestCard extends StatelessWidget {
                             color: borderColor,
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ),
 
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          "★ $difficulty",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+                      const SizedBox(width: 12),
 
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          "⏱ $intensity",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.06),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              "⭐ $difficulty",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
-                        ),
+
+                          const SizedBox(width: 8),
+
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.06),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              "⚡ $intensity",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
+
+                  const SizedBox(height: 10),
+
+                  if (timeRange != null)
+                    Text(
+                      timeRange!,
+                      style: TextStyle(color: Colors.white54, fontSize: 13),
+                    ),
+
+                  const SizedBox(height: 14),
+
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: LinearProgressIndicator(
+                      value: total == 0 ? 0 : progress / total,
+                      minHeight: 4,
+                      backgroundColor: Colors.white10,
+                      valueColor: AlwaysStoppedAnimation(borderColor),
+                    ),
+                  ),
+
+                  if (dueStatus != null) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      dueStatus!,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: dueStatus!.contains("DUE")
+                            ? Colors.redAccent
+                            : Colors.white38,
+                        letterSpacing: 0.6,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
-            if (onDelete != null)
-              Positioned(
-                top: 16,
-                right: 16,
-                child: GestureDetector(
-                  onTap: onDelete,
-                  child: Icon(
-                    Icons.delete_outline,
-                    size: 18,
-                    color: Colors.grey[500],
-                  ),
-                ),
-              ),
+            // if (onDelete != null)
+            //   Positioned(
+            //     top: 16,
+            //     right: 16,
+            //     child: GestureDetector(
+            //       onTap: onDelete,
+            //       child: Icon(
+            //         Icons.delete_outline,
+            //         size: 18,
+            //         color: Colors.grey[500],
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),
