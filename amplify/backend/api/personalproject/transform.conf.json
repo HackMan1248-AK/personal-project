@@ -1,0 +1,11 @@
+{
+  "Version": 5,
+  "ElasticsearchWarning": true,
+  "DataStoreEnabled": true,
+  "ResolverConfig": {
+    "project": {
+      "ConflictHandler": "AUTOMERGE",
+      "ConflictDetection": "VERSION"
+    }
+  }
+}

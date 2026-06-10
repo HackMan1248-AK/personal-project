@@ -1,0 +1,392 @@
+type Task {
+  id: ID!
+  name: String!
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean!
+  owner: String
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type User {
+  id: ID!
+  knowledge: Float!
+  charisma: Float!
+  strength: Float!
+  persistence: Float!
+  level: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  owner: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTaskConnection {
+  items: [Task]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTaskFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  category: ModelStringInput
+  difficulty: ModelIntInput
+  timeIntensive: ModelIntInput
+  fromTime: ModelStringInput
+  toTime: ModelStringInput
+  fromDate: ModelStringInput
+  toDate: ModelStringInput
+  createdAt: ModelStringInput
+  completed: ModelBooleanInput
+  owner: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelTaskFilterInput]
+  or: [ModelTaskFilterInput]
+  not: ModelTaskFilterInput
+  _deleted: ModelBooleanInput
+}
+
+type Query {
+  getTask(id: ID!): Task
+  listTasks(filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection
+  syncTasks(filter: ModelTaskFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTaskConnection
+  getUser(id: ID!): User
+  listUsers(id: ID, filter: ModelUserFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserConnection
+  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
+}
+
+input ModelTaskConditionInput {
+  name: ModelStringInput
+  category: ModelStringInput
+  difficulty: ModelIntInput
+  timeIntensive: ModelIntInput
+  fromTime: ModelStringInput
+  toTime: ModelStringInput
+  fromDate: ModelStringInput
+  toDate: ModelStringInput
+  createdAt: ModelStringInput
+  completed: ModelBooleanInput
+  owner: ModelStringInput
+  and: [ModelTaskConditionInput]
+  or: [ModelTaskConditionInput]
+  not: ModelTaskConditionInput
+  _deleted: ModelBooleanInput
+  updatedAt: ModelStringInput
+}
+
+input CreateTaskInput {
+  id: ID
+  name: String!
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean!
+  owner: String
+  _version: Int
+}
+
+input UpdateTaskInput {
+  id: ID!
+  name: String
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean
+  owner: String
+  _version: Int
+}
+
+input DeleteTaskInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createTask(input: CreateTaskInput!, condition: ModelTaskConditionInput): Task
+  updateTask(input: UpdateTaskInput!, condition: ModelTaskConditionInput): Task
+  deleteTask(input: DeleteTaskInput!, condition: ModelTaskConditionInput): Task
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+}
+
+input ModelSubscriptionTaskFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  category: ModelSubscriptionStringInput
+  difficulty: ModelSubscriptionIntInput
+  timeIntensive: ModelSubscriptionIntInput
+  fromTime: ModelSubscriptionStringInput
+  toTime: ModelSubscriptionStringInput
+  fromDate: ModelSubscriptionStringInput
+  toDate: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  completed: ModelSubscriptionBooleanInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTaskFilterInput]
+  or: [ModelSubscriptionTaskFilterInput]
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+type Subscription {
+  onCreateTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["createTask"])
+  onUpdateTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["updateTask"])
+  onDeleteTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["deleteTask"])
+  onCreateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["deleteUser"])
+}
+
+type ModelUserConnection {
+  items: [User]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  knowledge: ModelFloatInput
+  charisma: ModelFloatInput
+  strength: ModelFloatInput
+  persistence: ModelFloatInput
+  level: ModelFloatInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input ModelUserConditionInput {
+  knowledge: ModelFloatInput
+  charisma: ModelFloatInput
+  strength: ModelFloatInput
+  persistence: ModelFloatInput
+  level: ModelFloatInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input CreateUserInput {
+  id: ID
+  knowledge: Float!
+  charisma: Float!
+  strength: Float!
+  persistence: Float!
+  level: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  _version: Int
+}
+
+input UpdateUserInput {
+  id: ID!
+  knowledge: Float
+  charisma: Float
+  strength: Float
+  persistence: Float
+  level: Float
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  _version: Int
+}
+
+input DeleteUserInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionUserFilterInput {
+  id: ModelSubscriptionIDInput
+  knowledge: ModelSubscriptionFloatInput
+  charisma: ModelSubscriptionFloatInput
+  strength: ModelSubscriptionFloatInput
+  persistence: ModelSubscriptionFloatInput
+  level: ModelSubscriptionFloatInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUserFilterInput]
+  or: [ModelSubscriptionUserFilterInput]
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}

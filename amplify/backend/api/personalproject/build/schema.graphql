@@ -1,0 +1,578 @@
+type Task {
+  id: ID!
+  name: String!
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean!
+  owner: String
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type User {
+  id: ID!
+  knowledge: Float!
+  charisma: Float!
+  strength: Float!
+  persistence: Float!
+  level: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  subjects(name: ModelStringKeyConditionInput, filter: ModelSubjectFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSubjectConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  owner: String
+}
+
+type Subject {
+  id: ID!
+  name: String!
+  color: String
+  userID: ID!
+  topics(name: ModelStringKeyConditionInput, filter: ModelTopicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelTopicConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  owner: String
+}
+
+type Topic {
+  id: ID!
+  name: String!
+  subjectID: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  owner: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTaskConnection {
+  items: [Task]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTaskFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  category: ModelStringInput
+  difficulty: ModelIntInput
+  timeIntensive: ModelIntInput
+  fromTime: ModelStringInput
+  toTime: ModelStringInput
+  fromDate: ModelStringInput
+  toDate: ModelStringInput
+  createdAt: ModelStringInput
+  completed: ModelBooleanInput
+  owner: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelTaskFilterInput]
+  or: [ModelTaskFilterInput]
+  not: ModelTaskFilterInput
+  _deleted: ModelBooleanInput
+}
+
+type Query {
+  getTask(id: ID!): Task
+  listTasks(filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection
+  syncTasks(filter: ModelTaskFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTaskConnection
+  getUser(id: ID!): User
+  listUsers(id: ID, filter: ModelUserFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserConnection
+  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
+  getSubject(id: ID!): Subject
+  listSubjects(id: ID, filter: ModelSubjectFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelSubjectConnection
+  syncSubjects(filter: ModelSubjectFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelSubjectConnection
+  getTopic(id: ID!): Topic
+  listTopics(id: ID, filter: ModelTopicFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelTopicConnection
+  syncTopics(filter: ModelTopicFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTopicConnection
+  subjectsByUserIDAndName(userID: ID!, name: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelSubjectFilterInput, limit: Int, nextToken: String): ModelSubjectConnection
+  topicsBySubjectIDAndName(subjectID: ID!, name: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelTopicFilterInput, limit: Int, nextToken: String): ModelTopicConnection
+}
+
+input ModelTaskConditionInput {
+  name: ModelStringInput
+  category: ModelStringInput
+  difficulty: ModelIntInput
+  timeIntensive: ModelIntInput
+  fromTime: ModelStringInput
+  toTime: ModelStringInput
+  fromDate: ModelStringInput
+  toDate: ModelStringInput
+  createdAt: ModelStringInput
+  completed: ModelBooleanInput
+  owner: ModelStringInput
+  and: [ModelTaskConditionInput]
+  or: [ModelTaskConditionInput]
+  not: ModelTaskConditionInput
+  _deleted: ModelBooleanInput
+  updatedAt: ModelStringInput
+}
+
+input CreateTaskInput {
+  id: ID
+  name: String!
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean!
+  owner: String
+  _version: Int
+}
+
+input UpdateTaskInput {
+  id: ID!
+  name: String
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean
+  owner: String
+  _version: Int
+}
+
+input DeleteTaskInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createTask(input: CreateTaskInput!, condition: ModelTaskConditionInput): Task
+  updateTask(input: UpdateTaskInput!, condition: ModelTaskConditionInput): Task
+  deleteTask(input: DeleteTaskInput!, condition: ModelTaskConditionInput): Task
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createSubject(input: CreateSubjectInput!, condition: ModelSubjectConditionInput): Subject
+  updateSubject(input: UpdateSubjectInput!, condition: ModelSubjectConditionInput): Subject
+  deleteSubject(input: DeleteSubjectInput!, condition: ModelSubjectConditionInput): Subject
+  createTopic(input: CreateTopicInput!, condition: ModelTopicConditionInput): Topic
+  updateTopic(input: UpdateTopicInput!, condition: ModelTopicConditionInput): Topic
+  deleteTopic(input: DeleteTopicInput!, condition: ModelTopicConditionInput): Topic
+}
+
+input ModelSubscriptionTaskFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  category: ModelSubscriptionStringInput
+  difficulty: ModelSubscriptionIntInput
+  timeIntensive: ModelSubscriptionIntInput
+  fromTime: ModelSubscriptionStringInput
+  toTime: ModelSubscriptionStringInput
+  fromDate: ModelSubscriptionStringInput
+  toDate: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  completed: ModelSubscriptionBooleanInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTaskFilterInput]
+  or: [ModelSubscriptionTaskFilterInput]
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+type Subscription {
+  onCreateTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["createTask"])
+  onUpdateTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["updateTask"])
+  onDeleteTask(filter: ModelSubscriptionTaskFilterInput, owner: String): Task @aws_subscribe(mutations: ["deleteTask"])
+  onCreateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput, owner: String): User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateSubject(filter: ModelSubscriptionSubjectFilterInput, owner: String): Subject @aws_subscribe(mutations: ["createSubject"])
+  onUpdateSubject(filter: ModelSubscriptionSubjectFilterInput, owner: String): Subject @aws_subscribe(mutations: ["updateSubject"])
+  onDeleteSubject(filter: ModelSubscriptionSubjectFilterInput, owner: String): Subject @aws_subscribe(mutations: ["deleteSubject"])
+  onCreateTopic(filter: ModelSubscriptionTopicFilterInput, owner: String): Topic @aws_subscribe(mutations: ["createTopic"])
+  onUpdateTopic(filter: ModelSubscriptionTopicFilterInput, owner: String): Topic @aws_subscribe(mutations: ["updateTopic"])
+  onDeleteTopic(filter: ModelSubscriptionTopicFilterInput, owner: String): Topic @aws_subscribe(mutations: ["deleteTopic"])
+}
+
+type ModelUserConnection {
+  items: [User]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  knowledge: ModelFloatInput
+  charisma: ModelFloatInput
+  strength: ModelFloatInput
+  persistence: ModelFloatInput
+  level: ModelFloatInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input ModelUserConditionInput {
+  knowledge: ModelFloatInput
+  charisma: ModelFloatInput
+  strength: ModelFloatInput
+  persistence: ModelFloatInput
+  level: ModelFloatInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input CreateUserInput {
+  id: ID
+  knowledge: Float!
+  charisma: Float!
+  strength: Float!
+  persistence: Float!
+  level: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  _version: Int
+}
+
+input UpdateUserInput {
+  id: ID!
+  knowledge: Float
+  charisma: Float
+  strength: Float
+  persistence: Float
+  level: Float
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  _version: Int
+}
+
+input DeleteUserInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionUserFilterInput {
+  id: ModelSubscriptionIDInput
+  knowledge: ModelSubscriptionFloatInput
+  charisma: ModelSubscriptionFloatInput
+  strength: ModelSubscriptionFloatInput
+  persistence: ModelSubscriptionFloatInput
+  level: ModelSubscriptionFloatInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUserFilterInput]
+  or: [ModelSubscriptionUserFilterInput]
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+type ModelSubjectConnection {
+  items: [Subject]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelSubjectFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  color: ModelStringInput
+  userID: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelSubjectFilterInput]
+  or: [ModelSubjectFilterInput]
+  not: ModelSubjectFilterInput
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input ModelSubjectConditionInput {
+  name: ModelStringInput
+  color: ModelStringInput
+  userID: ModelIDInput
+  and: [ModelSubjectConditionInput]
+  or: [ModelSubjectConditionInput]
+  not: ModelSubjectConditionInput
+  _deleted: ModelBooleanInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateSubjectInput {
+  id: ID
+  name: String!
+  color: String
+  userID: ID!
+  _version: Int
+}
+
+input UpdateSubjectInput {
+  id: ID!
+  name: String
+  color: String
+  userID: ID
+  _version: Int
+}
+
+input DeleteSubjectInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionSubjectFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  color: ModelSubscriptionStringInput
+  userID: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionSubjectFilterInput]
+  or: [ModelSubscriptionSubjectFilterInput]
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+type ModelTopicConnection {
+  items: [Topic]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTopicFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  subjectID: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelTopicFilterInput]
+  or: [ModelTopicFilterInput]
+  not: ModelTopicFilterInput
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input ModelTopicConditionInput {
+  name: ModelStringInput
+  subjectID: ModelIDInput
+  and: [ModelTopicConditionInput]
+  or: [ModelTopicConditionInput]
+  not: ModelTopicConditionInput
+  _deleted: ModelBooleanInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  owner: ModelStringInput
+}
+
+input CreateTopicInput {
+  id: ID
+  name: String!
+  subjectID: ID!
+  _version: Int
+}
+
+input UpdateTopicInput {
+  id: ID!
+  name: String
+  subjectID: ID
+  _version: Int
+}
+
+input DeleteTopicInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelSubscriptionTopicFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  subjectID: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTopicFilterInput]
+  or: [ModelSubscriptionTopicFilterInput]
+  _deleted: ModelBooleanInput
+  owner: ModelStringInput
+}
+
+input ModelStringKeyConditionInput {
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: [String]
+  beginsWith: String
+}

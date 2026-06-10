@@ -1,0 +1,193 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-personalproject-ppvthree-af532-authRole",
+      "UnauthRoleArn": "arn:aws:iam::854391736982:role/amplify-personalproject-ppvthree-af532-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::854391736982:role/amplify-personalproject-ppvthree-af532-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-personalproject-ppvthree-af532-deployment",
+      "UnauthRoleName": "amplify-personalproject-ppvthree-af532-unauthRole",
+      "StackName": "amplify-personalproject-ppvthree-af532",
+      "StackId": "arn:aws:cloudformation:ap-south-1:854391736982:stack/amplify-personalproject-ppvthree-af532/72c1e120-9772-11f0-b57c-0a17daea0ecd",
+      "AmplifyAppId": "d2yyizpxuddava",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    }
+  },
+  "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries514c2ee0"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "AdminQueries",
+        "RootUrl": "https://ndqo4upfmg.execute-api.ap-south-1.amazonaws.com/ppvthree",
+        "ApiId": "ndqo4upfmg"
+      },
+      "lastPushTimeStamp": "2026-01-19T01:41:50.718Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/api/AdminQueries-cloudformation-template.json",
+        "logicalId": "apiAdminQueries"
+      }
+    },
+    "personalproject": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authpersonalproject0c018be0"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "pctxgo2hbnfczkhiuwxgxzuu2u",
+        "GraphQLAPIEndpointOutput": "https://mm2kggjhxzbnfkq24ky2wszgyy.appsync-api.ap-south-1.amazonaws.com/graphql"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2026-01-19T01:41:52.046Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apipersonalproject"
+      },
+      "lastPushDirHash": "Hk3POoIQk/TMNHl0CaQTdpEe+ck="
+    }
+  },
+  "auth": {
+    "personalproject0c018be0": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "GoogleWebClient": "813741887850-d9dko0p0je35r0n9lf8cc544jr5konuf.apps.googleusercontent.com",
+        "UserPoolId": "ap-south-1_2wBHHU4mS",
+        "AppClientIDWeb": "549rbsjjuccmlgv8l767cenh3f",
+        "AppClientID": "3t5am65q1bvv2n1ttt0c1miqh6",
+        "HostedUIDomain": "personalproject258ebb3d-258ebb3d-ppvthree",
+        "IdentityPoolId": "ap-south-1:5c6c55cc-df06-464f-9bf9-92ad87960ea6",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-south-1:854391736982:userpool/ap-south-1_2wBHHU4mS",
+        "IdentityPoolName": "personalproject0c018be0_identitypool_0c018be0__ppvthree",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:1234/\"],\"LogoutURLs\":[\"http://localhost:1234/logout/\"]}",
+        "UserPoolName": "personalproject0c018be0_userpool_0c018be0"
+      },
+      "lastPushTimeStamp": "2026-01-19T01:41:51.027Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/auth/personalproject0c018be0-cloudformation-template.json",
+        "logicalId": "authpersonalproject0c018be0"
+      }
+    }
+  },
+  "function": {
+    "AdminQueries514c2ee0": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::854391736982:role/AdminQueries514c2ee0LambdaRole-ppvthree",
+        "Region": "ap-south-1",
+        "Arn": "arn:aws:lambda:ap-south-1:854391736982:function:AdminQueries514c2ee0-ppvthree",
+        "Name": "AdminQueries514c2ee0-ppvthree",
+        "LambdaExecutionRole": "AdminQueries514c2ee0LambdaRole-ppvthree"
+      },
+      "lastPushTimeStamp": "2026-01-19T01:41:51.065Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/function/AdminQueries514c2ee0-cloudformation-template.json",
+        "logicalId": "functionAdminQueries514c2ee0"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-personalproject-ppvthree-af532-deployment",
+        "s3Key": "amplify-builds/AdminQueries514c2ee0-56574350447836772b4e-build.zip"
+      }
+    },
+    "personalproject0c018be0CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::854391736982:role/personalproject0c018be0CustomMessage-ppvthree",
+        "Region": "ap-south-1",
+        "Arn": "arn:aws:lambda:ap-south-1:854391736982:function:personalproject0c018be0CustomMessage-ppvthree",
+        "Name": "personalproject0c018be0CustomMessage-ppvthree",
+        "LambdaExecutionRole": "personalproject0c018be0CustomMessage-ppvthree"
+      },
+      "lastPushTimeStamp": "2026-01-19T01:41:51.100Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/function/personalproject0c018be0CustomMessage-cloudformation-template.json",
+        "logicalId": "functionpersonalproject0c018be0CustomMessage"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-personalproject-ppvthree-af532-deployment",
+        "s3Key": "amplify-builds/personalproject0c018be0CustomMessage-576d524d6f6f42457853-build.zip"
+      }
+    }
+  },
+  "storage": {}
+}

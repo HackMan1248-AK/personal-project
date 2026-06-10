@@ -1,0 +1,85 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-personalproject-dev-7f0fc-authRole",
+      "UnauthRoleArn": "arn:aws:iam::854391736982:role/amplify-personalproject-dev-7f0fc-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::854391736982:role/amplify-personalproject-dev-7f0fc-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-personalproject-dev-7f0fc-deployment",
+      "UnauthRoleName": "amplify-personalproject-dev-7f0fc-unauthRole",
+      "StackName": "amplify-personalproject-dev-7f0fc",
+      "StackId": "arn:aws:cloudformation:ap-south-1:854391736982:stack/amplify-personalproject-dev-7f0fc/8ca447b0-49ff-11f0-b26c-02f3128f87a9",
+      "AmplifyAppId": "d2yyizpxuddava",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-personalproject-dev-7f0fc-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "personalproject6cd77ae7": {},
+        "personalproject0c018be0": {
+          "googleClientId": "54435405508-7uqjj7si3bbadidblhvp0v942kq979s4.apps.googleusercontent.com"
+        }
+      },
+      "function": {
+        "personalproject0c018be0CustomMessage": {
+          "REDIRECTURL": "http://localhost:3000/",
+          "EMAILSUBJECT": "Welcome to AdventureLog! - Verify to get Started",
+          "EMAILMESSAGE": "Verify here to let us know it's you and without any more hastle go onwards! Completing Quests and slaying monsters - AdventureLog",
+          "deploymentBucketName": "amplify-personalproject-dev-7f0fc-deployment",
+          "s3Key": "amplify-builds/personalproject0c018be0CustomMessage-576d524d6f6f42457853-build.zip",
+          "emailsubject": "Welcome to AdventureLog! - Verify to get Started",
+          "emailmessage": "Verify here to let us know it's you and without any more hastle go onwards! Completing Quests and slaying monsters - AdventureLog. (####)"
+        },
+        "AdminQueries514c2ee0": {
+          "deploymentBucketName": "amplify-personalproject-dev-7f0fc-deployment",
+          "s3Key": "amplify-builds/AdminQueries514c2ee0-56574350447836772b4e-build.zip"
+        },
+        "personalproject0c018be0": {}
+      },
+      "api": {
+        "AdminQueries": {},
+        "personalproject": {}
+      }
+    }
+  },
+  "ppvthree": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-personalproject-ppvthree-af532-authRole",
+      "UnauthRoleArn": "arn:aws:iam::854391736982:role/amplify-personalproject-ppvthree-af532-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::854391736982:role/amplify-personalproject-ppvthree-af532-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-personalproject-ppvthree-af532-deployment",
+      "UnauthRoleName": "amplify-personalproject-ppvthree-af532-unauthRole",
+      "StackName": "amplify-personalproject-ppvthree-af532",
+      "StackId": "arn:aws:cloudformation:ap-south-1:854391736982:stack/amplify-personalproject-ppvthree-af532/72c1e120-9772-11f0-b57c-0a17daea0ecd",
+      "AmplifyAppId": "d2yyizpxuddava",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-personalproject-ppvthree-af532-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "personalproject0c018be0": {
+          "googleClientId": "813741887850-d9dko0p0je35r0n9lf8cc544jr5konuf.apps.googleusercontent.com"
+        }
+      },
+      "function": {
+        "AdminQueries514c2ee0": {
+          "deploymentBucketName": "amplify-personalproject-ppvthree-af532-deployment",
+          "s3Key": "amplify-builds/AdminQueries514c2ee0-56574350447836772b4e-build.zip"
+        },
+        "personalproject0c018be0CustomMessage": {
+          "REDIRECTURL": "http://localhost:3000/",
+          "EMAILSUBJECT": "Welcome to AdventureLog! - Verify to get Started",
+          "EMAILMESSAGE": "Verify here to let us know it's you and without any more hastle go onwards! Completing Quests and slaying monsters - AdventureLog",
+          "deploymentBucketName": "amplify-personalproject-ppvthree-af532-deployment",
+          "s3Key": "amplify-builds/personalproject0c018be0CustomMessage-576d524d6f6f42457853-build.zip",
+          "emailsubject": "Welcome to AdventureLog! - Verify to get Started",
+          "emailmessage": "Verify here to let us know it's you and without any more hastle go onwards! Completing Quests and slaying monsters - AdventureLog. (####)"
+        },
+        "personalproject0c018be0": {}
+      },
+      "api": {
+        "AdminQueries": {},
+        "personalproject": {}
+      }
+    }
+  }
+}

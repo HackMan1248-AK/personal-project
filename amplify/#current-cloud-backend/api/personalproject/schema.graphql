@@ -1,0 +1,46 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+#GraphQL endpoint: https://l6z6yey3x5cxjderrhatmybruu.appsync-api.ap-south-1.amazonaws.com/graphql
+# GraphQL API KEY: da2-gmql3hcwurfhrgdm3fzppivghi
+
+type Task @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  category: String
+  difficulty: Int
+  timeIntensive: Int
+  fromTime: String
+  toTime: String
+  fromDate: AWSDate
+  toDate: AWSDate
+  createdAt: AWSDateTime
+  completed: Boolean!
+  owner: String
+    @auth(rules: [{ allow: owner, operations: [read, create, update, delete] }])
+}
+
+type User @model @auth(rules: [{ allow: owner }]) {
+  id: ID! @primaryKey
+  knowledge: Float!
+  charisma: Float!
+  strength: Float!
+  persistence: Float!
+  level: Float!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  subjects: [Subject] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type Subject @model @auth(rules: [{ allow: owner }]) {
+  id: ID! @primaryKey
+  name: String!
+  color: String
+  userID: ID! @index(name: "byUser", sortKeyFields: ["name"])
+  topics: [Topic] @hasMany(indexName: "bySubject", fields: ["id"])
+}
+
+type Topic @model @auth(rules: [{ allow: owner }]) {
+  id: ID! @primaryKey
+  name: String!
+  subjectID: ID! @index(name: "bySubject", sortKeyFields: ["name"])
+}

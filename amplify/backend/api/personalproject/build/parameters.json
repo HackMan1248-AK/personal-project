@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "personalproject",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authpersonalproject0c018be0",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "S3DeploymentBucket": "amplify-personalproject-ppvthree-af532-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/39d292cb4cd46fde861885b800a8331c134da885"
+}

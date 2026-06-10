@@ -1,0 +1,194 @@
+{
+  "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries514c2ee0"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "personalproject": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authpersonalproject0c018be0"
+            }
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "personalproject0c018be0": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "AdminQueries514c2ee0": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "personalproject0c018be0CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_personalproject0c018be0_googleClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "personalproject0c018be0"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries514c2ee0_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries514c2ee0"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries514c2ee0_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries514c2ee0"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_EMAILMESSAGE": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_EMAILSUBJECT": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_REDIRECTURL": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_emailmessage": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_emailsubject": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_personalproject0c018be0CustomMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "personalproject0c018be0CustomMessage"
+        }
+      ]
+    }
+  },
+  "storage": {}
+}
