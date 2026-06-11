@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:ClassViz/util/bottom_app_bar.dart";
+import "package:ClassViz/util/custom_bottom_nav.dart";
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:ClassViz/models/Topic.dart';
 import "package:ClassViz/pages/chat_page.dart";
@@ -80,7 +80,6 @@ class _SubjectPageState extends State<SubjectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: myAppBar().bottomAppBar(context),
       body: Stack(
         children: [
           SafeArea(
@@ -248,6 +247,23 @@ class _SubjectPageState extends State<SubjectPage> {
                     ],
                   ),
                 ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
+            child: SafeArea(
+              top: false,
+              child: CustomBottomNav(
+                currentIndex: 3,
+                onTap: (index) {
+                  if (index == 0) Navigator.pushNamed(context, "/homepage");
+                  if (index == 1) Navigator.pushNamed(context, "/taskspage");
+                  if (index == 2) Navigator.pop(context);
+                  if (index == 4) Navigator.pushNamed(context, "/profilepage");
+                },
               ),
             ),
           ),

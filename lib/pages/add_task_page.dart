@@ -1,29 +1,27 @@
 import "package:amplify_flutter/amplify_flutter.dart";
 import "package:flutter/material.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
 import "package:ClassViz/util/dialog_box.dart";
-import "package:ClassViz/util/my_button.dart";
+import "package:ClassViz/util/custom_cards.dart";
 
 class AddTaskPage extends StatefulWidget {
-  final TextEditingController controller;
-  final TextEditingController dropdownController;
-  final VoidCallback onSave;
-  final VoidCallback onCancel;
-
-  const AddTaskPage({
-    super.key,
-    required this.controller,
-    required this.dropdownController,
-    required this.onSave,
-    required this.onCancel,
-  });
+  const AddTaskPage({super.key});
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  final TextEditingController controller = TextEditingController();
+  final TextEditingController dropdownController = TextEditingController();
+
   final items = ["🧠 Academics", "💪 Chores", "❤️ Socials", "🏋️ Physical"];
+
+  @override
+  void dispose() {
+    controller.dispose();
+    dropdownController.dispose();
+    super.dispose();
+  }
 
   TimeOfDay fromTime = TimeOfDay.now();
   Future<void> selectTimeFrom(BuildContext context) async {
@@ -73,12 +71,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Future<void> selectDateTo(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDateTo ?? DateTime.now(),
-      firstDate: DateTime(1900),
+      initialDate: selectedDateTo ?? selectedDateFrom ?? DateTime.now(),
+      firstDate: selectedDateFrom ?? DateTime.now(),
       lastDate: DateTime(3000),
     );
 
-    if (picked != null && picked != selectedDateTo) {
+    if (picked != null) {
       setState(() {
         selectedDateTo = picked;
       });
@@ -86,12 +84,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> saveTaskToAPI() async {
-    //local helper to convert TimeOfDay to minutes since midnight
-    int _toMinutes(TimeOfDay t) => t.hour * 60 + t.minute;
-
     // Validate required fields
-    final name = widget.controller.text.trim();
-    final category = widget.dropdownController.text.trim();
+    final name = controller.text.trim();
+    final category = dropdownController.text.trim();
     final diff = difficultyRating.toInt();
     final timeInt = timeRating.toInt();
 
@@ -110,18 +105,35 @@ class _AddTaskPageState extends State<AddTaskPage> {
       });
     }
 
-    // If dates provided, validate ordering
-    if (_toMinutes(fromTime) >= _toMinutes(toTime)) {
-      errors.add("From time must be before To time.");
+    final start = DateTime(
+      selectedDateFrom!.year,
+      selectedDateFrom!.month,
+      selectedDateFrom!.day,
+      fromTime.hour,
+      fromTime.minute,
+    );
+
+    final end = DateTime(
+      selectedDateTo!.year,
+      selectedDateTo!.month,
+      selectedDateTo!.day,
+      toTime.hour,
+      toTime.minute,
+    );
+
+    // Validate chronology
+    if (!end.isAfter(start)) {
+      errors.add("End date/time must be after start date/time.");
     }
 
     if (errors.isNotEmpty) {
-      dialogBox("$errors", context);
-      print(errors);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("$errors")));
     } else {
       final input = {
-        'name': widget.controller.text,
-        'category': widget.dropdownController.text,
+        'name': controller.text,
+        'category': dropdownController.text,
         'difficulty': difficultyRating.toInt(),
         'timeIntensive': timeRating.toInt(),
         'fromTime': fromTime.format(context),
@@ -154,14 +166,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
           ).showSnackBar(SnackBar(content: Text('Task has been saved')));
         } else {
           print('GraphQL errors: ${response.errors}');
-          dialogBox(
-            '❌ Failed to save task: ${response.errors.first.message}',
-            context,
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '❌ Failed to save task: ${response.errors.first.message}',
+              ),
+            ),
           );
         }
       } catch (e) {
         print('Mutation failed: $e');
-        dialogBox('❌ Error saving task: $e', context);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('❌ Error saving task: $e')));
       }
     }
   }
@@ -169,8 +186,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   /*Future<void> uploadTaskToS3() async {
     final taskData =
         '''
-          Task: ${widget.controller.text}
-          Category: ${widget.dropdownController.text}
+          Task: ${controller.text}
+          Category: ${dropdownController.text}
           Difficulty: $difficultyRating
           Time Intensive: $timeRating
           From Date: ${selectedDateFrom?.toIso8601String() ?? 'Not selected'}
@@ -206,235 +223,282 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: Theme.of(context).canvasColor,
-      content: SizedBox(
-        height: MediaQuery.of(context).size.height - 40,
-        width: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Add A Task",
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: "UA",
-                color: Theme.of(context).colorScheme.primary,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Text(
+                    "Add Task",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              textAlign: TextAlign.center,
-            ),
 
-            SizedBox(height: 20),
+              const SizedBox(height: 28),
 
-            ConstrainedBox(
-              constraints: BoxConstraints(minWidth: 190),
-              child: IntrinsicWidth(
+              // Name
+              GlassCard(
+                padding: const EdgeInsets.all(20),
                 child: TextField(
-                  controller: widget.controller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                  controller: controller,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                     hintText: "Task Name",
+                    border: InputBorder.none,
                   ),
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
-            ),
 
-            SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            DropdownMenu(
-              width: 210,
-              controller: widget.dropdownController,
-              dropdownMenuEntries: items.map((String items) {
-                return DropdownMenuEntry(value: items, label: items);
-              }).toList(),
-              textStyle: TextStyle(
-                fontFamily: "Orbitron",
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
+              // Category
+              Center(
+                child: GlassCard(
+                  padding: const EdgeInsets.all(20),
+                  child: Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: items.map((category) {
+                      final selected = dropdownController.text == category;
 
-            SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Difficulty: ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-                RatingBar.builder(
-                  initialRating: difficultyRating,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  unratedColor: Colors.white,
-                  itemSize: 20,
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      difficultyRating = rating;
-                    });
-                  },
-                ),
-              ],
-            ),
-
-            SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Time Intensive: ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-                RatingBar.builder(
-                  initialRating: timeRating,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.access_time,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  unratedColor: Colors.white,
-                  itemSize: 20,
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      timeRating = rating;
-                    });
-                  },
-                ),
-              ],
-            ),
-
-            SizedBox(height: 20),
-
-            DefaultTextStyle(
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontSize: 20.0,
-              ),
-
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("From:"),
-                          SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () {
-                              selectTimeFrom(context);
-                            },
-                            child: Text(
-                              fromTime.format(context),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            dropdownController.text = category;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: selected
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.white10,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            category,
+                            style: TextStyle(
+                              color: selected ? Colors.black : Colors.white,
                             ),
                           ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          selectDateFrom(context);
-                        },
-                        child: Text(
-                          selectedDateFrom != null
-                              ? "${selectedDateFrom!.day}/${selectedDateFrom!.month}/${selectedDateFrom!.year}"
-                              : DateTime.now().toString().substring(0, 10),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              GlassCard(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Difficulty",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(height: 12),
+
+                    Row(
+                      children: List.generate(
+                        5,
+                        (index) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              difficultyRating = index + 1;
+                            });
+                          },
+                          child: Icon(
+                            Icons.star,
+                            size: 26,
+                            color: index < difficultyRating
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.white24,
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              GlassCard(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Time Intensity",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(height: 12),
 
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("To:"),
-                          SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () {
-                              selectTimeTo(context);
-                            },
-                            child: Text(
-                              toTime.format(context),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          selectDateTo(context);
-                        },
-                        child: Text(
-                          selectedDateTo != null
-                              ? "${selectedDateTo!.day}/${selectedDateTo!.month}/${selectedDateTo!.year}"
-                              : DateTime.now().toString().substring(0, 10),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    Row(
+                      children: List.generate(
+                        5,
+                        (index) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              timeRating = index + 1;
+                            });
+                          },
+                          child: Icon(
+                            Icons.bolt_rounded,
+                            size: 26,
+                            color: index < timeRating
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.white24,
                           ),
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              GlassCard(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    _timeTile(
+                      icon: Icons.schedule,
+                      label: "From",
+                      value: fromTime.format(context),
+                      onTap: () => selectTimeFrom(context),
+                    ),
+
+                    _timeTile(
+                      icon: Icons.flag,
+                      label: "To",
+                      value: toTime.format(context),
+                      onTap: () => selectTimeTo(context),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 12),
+
+              GlassCard(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    _timeTile(
+                      icon: Icons.calendar_today,
+                      label: "Start Date",
+                      value: selectedDateFrom != null
+                          ? "${selectedDateFrom!.day}/${selectedDateFrom!.month}/${selectedDateFrom!.year}"
+                          : "Select",
+                      onTap: () => selectDateFrom(context),
+                    ),
+
+                    _timeTile(
+                      icon: Icons.event,
+                      label: "Due Date",
+                      value: selectedDateTo != null
+                          ? "${selectedDateTo!.day}/${selectedDateTo!.month}/${selectedDateTo!.year}"
+                          : "Select",
+                      onTap: () => selectDateTo(context),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 30),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await saveTaskToAPI();
+                    if (context.mounted) Navigator.pop(context, true);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                   ),
-                ],
+                  child: const Text(
+                    "Save Task",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _timeTile({
+    required IconData icon,
+    required String label,
+    required String value,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Theme.of(context).colorScheme.primary, size: 18),
+            const SizedBox(width: 12),
+
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontWeight: FontWeight.w500,
               ),
             ),
 
-            SizedBox(height: 30),
+            const Spacer(),
 
-            Material(
-              textStyle: TextStyle(color: Theme.of(context).primaryColorLight),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MyButton(
-                    text: "Save",
-                    onPressed: () async {
-                      await saveTaskToAPI();
-                      widget.onSave();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-
-                  const SizedBox(width: 8),
-
-                  MyButton(text: "Cancel", onPressed: widget.onCancel),
-                ],
+            Text(
+              value,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
               ),
             ),
+
+            const SizedBox(width: 8),
+
+            const Icon(Icons.chevron_right, color: Colors.white38),
           ],
         ),
       ),

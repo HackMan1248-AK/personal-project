@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:ClassViz/pages/add_task_page.dart';
 import "package:flutter/material.dart";
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:ClassViz/models/Task.dart';
@@ -488,7 +489,12 @@ class _TaskPageState extends State<TaskPage> {
                 currentIndex: 1,
                 onTap: (index) {
                   if (index == 0) Navigator.pushNamed(context, "/homepage");
-                  if (index == 2) _showAddTaskModal(context);
+                  if (index == 2) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => AddTaskPage()),
+                    );
+                  }
                   if (index == 3) Navigator.pushNamed(context, "/projectspage");
                   if (index == 4) Navigator.pushNamed(context, "/profilepage");
                 },
@@ -528,9 +534,5 @@ class _TaskPageState extends State<TaskPage> {
       default:
         return Colors.grey;
     }
-  }
-
-  void _showAddTaskModal(BuildContext context) {
-    showDialog(context: context, builder: (context) => AddTaskModal());
   }
 }

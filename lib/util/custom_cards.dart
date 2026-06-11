@@ -121,10 +121,7 @@ class QuestCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
-                            color: completed ? Colors.white38 : Colors.white,
-                            decoration: completed
-                                ? TextDecoration.lineThrough
-                                : null,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -134,7 +131,7 @@ class QuestCard extends StatelessWidget {
                           onTap: onDelete,
                           child: Icon(
                             Icons.delete_outline,
-                            color: Colors.white24,
+                            color: completed ? Colors.grey : Colors.red,
                             size: 20,
                           ),
                         ),
@@ -250,19 +247,6 @@ class QuestCard extends StatelessWidget {
                 ],
               ),
             ),
-            // if (onDelete != null)
-            //   Positioned(
-            //     top: 16,
-            //     right: 16,
-            //     child: GestureDetector(
-            //       onTap: onDelete,
-            //       child: Icon(
-            //         Icons.delete_outline,
-            //         size: 18,
-            //         color: Colors.grey[500],
-            //       ),
-            //     ),
-            //   ),
           ],
         ),
       ),
