@@ -1,6 +1,5 @@
 import "package:amplify_flutter/amplify_flutter.dart";
 import "package:flutter/material.dart";
-import "package:ClassViz/util/dialog_box.dart";
 import "package:ClassViz/util/custom_cards.dart";
 
 class AddTaskPage extends StatefulWidget {

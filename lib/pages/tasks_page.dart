@@ -10,7 +10,6 @@ import 'package:ClassViz/util/custom_cards.dart';
 import 'package:ClassViz/util/misc.dart';
 import 'package:ClassViz/models/ModelProvider.dart';
 import 'package:ClassViz/util/dialog_box.dart';
-import 'package:ClassViz/pages/home_page.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -457,6 +456,7 @@ class _TaskPageState extends State<TaskPage> {
                               categoryColor: _getCategoryColor(task.category),
                               borderColor: _getCategoryColor(task.category),
                               completed: task.completed,
+                              showComplete: true,
                               onTap: () async {
                                 await Navigator.push(
                                   context,

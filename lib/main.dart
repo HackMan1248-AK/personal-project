@@ -9,7 +9,6 @@ import 'package:ClassViz/pages/profile_page.dart';
 import 'package:ClassViz/pages/projects_page.dart';
 import 'package:ClassViz/pages/tasks_page.dart';
 import 'package:ClassViz/util/notification_service.dart';
-import 'package:ClassViz/util/overlay_view.dart';
 import 'package:ClassViz/util/task_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -57,11 +56,6 @@ void main() async {
   runApp(
     ChangeNotifierProvider(create: (context) => TaskProvider(), child: MyApp()),
   );
-}
-
-@pragma('vm:entry-point')
-void overlayMain() {
-  runApp(BlockOverlay());
 }
 
 Future<void> init() async {

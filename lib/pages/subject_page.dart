@@ -218,7 +218,7 @@ class _SubjectPageState extends State<SubjectPage> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 90, // sits above bottom nav
+            bottom: 200, // sits above bottom nav
             child: Center(
               child: GestureDetector(
                 onTap: _addTopic,
@@ -261,7 +261,7 @@ class _SubjectPageState extends State<SubjectPage> {
                 onTap: (index) {
                   if (index == 0) Navigator.pushNamed(context, "/homepage");
                   if (index == 1) Navigator.pushNamed(context, "/taskspage");
-                  if (index == 2) Navigator.pop(context);
+                  if (index == 2) _addTopic();
                   if (index == 4) Navigator.pushNamed(context, "/profilepage");
                 },
               ),

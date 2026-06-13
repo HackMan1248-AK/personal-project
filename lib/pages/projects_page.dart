@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:ClassViz/util/custom_bottom_nav.dart";
+import 'package:ClassViz/pages/add_task_page.dart';
 import 'package:ClassViz/pages/subject_page.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:ClassViz/models/Subject.dart';
@@ -259,7 +260,10 @@ class _ProjectsPageState extends State<ProjectsPage> {
                 onTap: (index) {
                   if (index == 0) Navigator.pushNamed(context, "/homepage");
                   if (index == 1) Navigator.pushNamed(context, "/taskspage");
-                  if (index == 2) _addSubject();
+                  if (index == 2) Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => AddTaskPage()),
+                    );
                   if (index == 4) Navigator.pushNamed(context, "/profilepage");
                 },
               ),

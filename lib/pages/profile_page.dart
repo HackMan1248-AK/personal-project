@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:ClassViz/services/auth_service.dart";
 import "package:ClassViz/util/custom_bottom_nav.dart";
 import "package:image_picker/image_picker.dart";
+import 'package:ClassViz/pages/add_task_page.dart';
 import "package:ClassViz/util/custom_cards.dart";
 
 class ProfilePage extends StatefulWidget {
@@ -15,19 +16,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  /* void signUserOut(BuildContext context) {
-    FirebaseAuth.instance.signOut();
-    Navigator.pushNamed(context, "/loginpage");
-  }
-
-  void signOut(BuildContext context) async {
-    try {
-      await Amplify.Auth.signOut();
-      Navigator.pushNamed(context, "/loginpage");
-    } on AuthException catch (e) {
-      print("❌ Sign out failed: ${e.message}");
-    }
-  } */
 
   File? _image;
   String? _imageUrl;
@@ -483,7 +471,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 onTap: (index) {
                   if (index == 0) Navigator.pushNamed(context, "/homepage");
                   if (index == 1) Navigator.pushNamed(context, "/taskspage");
-                  if (index == 2) {}
+                  if (index == 2)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => AddTaskPage()),
+                    );
                   if (index == 3) Navigator.pushNamed(context, "/projectspage");
                 },
               ),

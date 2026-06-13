@@ -58,6 +58,7 @@ class QuestCard extends StatelessWidget {
   final String? dueStatus;
   final bool completed;
   final VoidCallback? onComplete;
+  final bool? showComplete;
 
   const QuestCard({
     Key? key,
@@ -71,6 +72,7 @@ class QuestCard extends StatelessWidget {
     required this.categoryColor,
     required this.borderColor,
     required this.completed,
+    this.showComplete,
     this.onTap,
     this.onComplete,
     this.onDelete,
@@ -93,28 +95,34 @@ class QuestCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: onComplete,
-                        child: Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: completed ? borderColor : Colors.transparent,
-                            border: Border.all(color: borderColor, width: 2),
-                          ),
-                          child: completed
-                              ? const Icon(
-                                  Icons.check,
-                                  size: 16,
-                                  color: Colors.black,
-                                )
-                              : null,
-                        ),
-                      ),
+                      showComplete == true
+                          ? GestureDetector(
+                              onTap: onComplete,
+                              child: Container(
+                                width: 26,
+                                height: 26,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: completed
+                                      ? borderColor
+                                      : Colors.transparent,
+                                  border: Border.all(
+                                    color: borderColor,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: completed
+                                    ? const Icon(
+                                        Icons.check,
+                                        size: 16,
+                                        color: Colors.black,
+                                      )
+                                    : null,
+                              ),
+                            )
+                          : const SizedBox(width: 0),
 
                       const SizedBox(width: 14),
-
                       Expanded(
                         child: Text(
                           title,
